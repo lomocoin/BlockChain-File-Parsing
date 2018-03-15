@@ -1,0 +1,7 @@
+package lomocoin
+
+const (
+	MAX_BLOCK_WEIGHT         = 4e6
+	LOCKTIME_THRESHOLD       = 500000000
+	MAX_PUBKEYS_PER_MULTISIG = 20
+)
