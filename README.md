@@ -1,1 +1,1 @@
-![about](https://github.com/lomocoin/BlockChain-File-Parsing/doc/img/gui.png)
+![about](https://github.com/lomocoin/BlockChain-File-Parsing/blob/development/doc/img/gui.png)
