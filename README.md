@@ -1,3 +1,1 @@
-### Install
-
-go get github.com/
+![about](https://github.com/lomocoin/BlockChain-File-Parsing/doc/img/gui.png)
