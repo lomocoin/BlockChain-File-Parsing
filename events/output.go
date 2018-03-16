@@ -1,53 +1,52 @@
 package events
 
 import (
-	"log"
 	"encoding/hex"
 	"github.com/lomocoin/blockchain-parsing/lomocoin"
+	"github.com/therecipe/qt/widgets"
+	"fmt"
 )
 
-func Put(bl *lomocoin.Block) {
-	log.Printf("Block hash: %v", bl.Hash)
-	log.Printf("Block size: %v", len(bl.Raw))
+func Put(bl *lomocoin.Block, console *widgets.QTextEdit) {
+	console.InsertPlainText(fmt.Sprintf("Block hash: %v \n", bl.Hash))
+	console.InsertPlainText(fmt.Sprintf("Block size: %v \n", len(bl.Raw)))
 
-	for _, tx := range bl.Txs {
-		log.Printf("======================================")
-		log.Printf("TxId: %v", tx.Hash.String())
-		log.Printf("Tx Size: %v", tx.Size)
-		log.Printf("Tx Lock time: %v", tx.Lock_time)
-		log.Printf("Tx Version: %v", tx.Version)
-		log.Printf("Tx Time: %v", tx.TxTime)
+	for index, tx := range bl.Txs {
+		console.InsertPlainText(fmt.Sprintf("==================TxIndex %v=================== \n", index))
+		console.InsertPlainText(fmt.Sprintf("TxId: %v\n", tx.Hash.String()))
+		console.InsertPlainText(fmt.Sprintf("Tx Size: %v\n", tx.Size))
+		console.InsertPlainText(fmt.Sprintf("Tx Lock time: %v\n", tx.Lock_time))
+		console.InsertPlainText(fmt.Sprintf("Tx Version: %v\n", tx.Version))
+		console.InsertPlainText(fmt.Sprintf("Tx Time: %v\n", tx.TxTime))
 
-		log.Println("TxIns:")
+		console.InsertPlainText(fmt.Sprintf("TxIns:\n"))
 
 		if tx.IsCoinBase() {
-			log.Printf("TxIn coinbase, newly generated coins")
+			console.InsertPlainText(fmt.Sprintf("TxIn coinbase, newly generated coins\n"))
 		} else {
 			for txin_index, txin := range tx.TxIn {
-				log.Printf("TxIn index: %v", txin_index)
-				log.Printf("TxIn Txid: %v", txin.Input.HashString())
-				log.Printf("TxIn Vout: %v", txin.Input.VoutString())
-				log.Printf("TxIn ScriptSig hex: %v", hex.EncodeToString(txin.ScriptSig))
-				log.Printf("TxIn Sequence: %v", txin.Sequence)
+				console.InsertPlainText(fmt.Sprintf("TxIn index: %v\n", txin_index))
+				console.InsertPlainText(fmt.Sprintf("TxIn Txid: %v\n", txin.Input.HashString()))
+				console.InsertPlainText(fmt.Sprintf("TxIn Vout: %v\n", txin.Input.VoutString()))
+				console.InsertPlainText(fmt.Sprintf("TxIn ScriptSig hex: %v\n", hex.EncodeToString(txin.ScriptSig)))
+				console.InsertPlainText(fmt.Sprintf("TxIn Sequence: %v\n", txin.Sequence))
 			}
 		}
 
-		log.Println("TxOuts:")
+		console.InsertPlainText(fmt.Sprintf("TxOuts:\n"))
 
 		for txo_index, txout := range tx.TxOut {
-			log.Printf("TxOut index: %v", txo_index)
-			log.Printf("TxOut value: %v", txout.Value)
-			log.Printf("TxOut value: %v", txout.Value)
-			log.Printf("TxOut scriptPubKey hex: %s", hex.EncodeToString(txout.Pk_script))
-			log.Printf("TxOut scriptPubKey type: %s", lomocoin.ScriptPubKeyType(txout))
+			console.InsertPlainText(fmt.Sprintf("TxOut index: %v\n", txo_index))
+			console.InsertPlainText(fmt.Sprintf("TxOut value: %v\n", txout.Value))
+			console.InsertPlainText(fmt.Sprintf("TxOut scriptPubKey hex: %s\n", hex.EncodeToString(txout.Pk_script)))
+			console.InsertPlainText(fmt.Sprintf("TxOut scriptPubKey type: %s\n", lomocoin.ScriptPubKeyType(txout)))
 
 			txout_addr := lomocoin.NewAddrFromPkScript(txout.Pk_script, false)
 			if txout_addr != nil {
-				log.Printf("TxOut address: %v", txout_addr.String())
+				console.InsertPlainText(fmt.Sprintf("TxOut address: %v\n", txout_addr.String()))
 			} else {
-				log.Printf("TxOut address: can't decode address")
+				console.InsertPlainText(fmt.Sprintf("TxOut address: can't decode address\n"))
 			}
 		}
 	}
-	log.Println()
 }
